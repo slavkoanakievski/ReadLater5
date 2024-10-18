@@ -34,6 +34,8 @@ namespace ReadLater5
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBookmarkRepository, BookmarkRepository>();
             services.AddScoped<IBookmarkService, BookmarkService>();
+            services.AddScoped<ITrackingRepository, TrackingRepository>();
+            services.AddScoped<ITrackingService, TrackingService>();
 
             services.AddControllersWithViews();
         }

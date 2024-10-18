@@ -35,7 +35,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.URL)
+                    <form asp-action="TrackClick" asp-controller="Tracking" method="post" class="d-inline">
+                        <input type="hidden" name="bookmarkId" value="@item.ID" />
+                        <button type="submit" class="btn btn-link p-0">@Html.DisplayFor(modelItem => item.URL)</button>
+                    </form>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ShortDescription)
