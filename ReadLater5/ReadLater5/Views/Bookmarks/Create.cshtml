@@ -1,0 +1,66 @@
+﻿@model Entity.Bookmark
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Bookmark</h2>
+
+@using (Html.BeginForm("Create", "Bookmarks", FormMethod.Post, new { @id = "bookmarkForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.URL, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.URL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CategoryId", (SelectList)ViewBag.CategoryList, "Select Category", new { @class = "form-control", @id = "categoryDropdown" })
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+
+                <button type="button" class="btn btn-primary mt-2" id="addNewCategoryBtn">Add New Category</button>
+            </div>
+        </div>
+
+        <div class="form-group mt-2" id="newCategoryField" style="display:none;">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.TextBox("NewCategoryName", null, new { @class = "form-control" })
+                @Html.ValidationMessage("NewCategoryName", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Bookmark" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#addNewCategoryBtn').click(function () {
+                $('#newCategoryField').toggle();
+            });
+        });
+    </script>
+}
