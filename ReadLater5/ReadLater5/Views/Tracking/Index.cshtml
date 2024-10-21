@@ -4,28 +4,33 @@
     ViewData["Title"] = "Activity Tracking List";
 }
 
-<h1>Activity Tracking</h1>
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>Activity Tracking</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Bookmark Id</th>
-            <th>Clicked At</th>
-            <th>Source URL</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tracking in Model)
-        {
+    <div style="max-height: 400px; overflow-y: auto;">
+    <table class="table">
+        <thead>
             <tr>
-                <td>@tracking.Id</td>
-                <td>@tracking.UserId</td>
-                <td>@tracking.BookmarkId</td>
-                <td>@tracking.ClickedAt</td>
-                <td>@tracking.SourceUrl</td>
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Bookmark Id</th>
+                <th>Clicked At</th>
+                <th>Source URL</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+                @foreach (var tracking in Model)
+                {
+                    <tr>
+                        <td>@tracking.Id</td>
+                        <td>@tracking.UserId</td>
+                        <td>@tracking.BookmarkId</td>
+                        <td>@tracking.ClickedAt</td>
+                        <td>@tracking.SourceUrl</td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+    </div>
+}

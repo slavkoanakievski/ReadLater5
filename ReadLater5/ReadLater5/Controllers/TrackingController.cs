@@ -1,5 +1,6 @@
 ﻿using Data;
 using Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ReadLater5.Controllers
 {
+    [Authorize]
     public class TrackingController : Controller
     {
 
@@ -47,7 +49,7 @@ namespace ReadLater5.Controllers
 
             await _trackingService.AddActivityTrackingAsync(tracking);
 
-            var bookmark =  _bookmarkService.GetBookmark(bookmarkId, userId);
+            var bookmark = _bookmarkService.GetBookmark(bookmarkId, userId);
             if (bookmark == null)
             {
                 return NotFound();

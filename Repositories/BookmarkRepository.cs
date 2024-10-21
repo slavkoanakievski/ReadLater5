@@ -22,9 +22,10 @@ namespace Repositories
                 .FirstOrDefault();
         }
 
-        public List<Bookmark> GetBookmarks()
+        public List<Bookmark> GetBookmarks(string userId)
         {
             return _readLaterDataContext.Bookmark
+                .Where(b => b.UserId == userId)
                 .Include(b => b.Category)
                 .ToList();
         }

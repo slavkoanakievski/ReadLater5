@@ -1,4 +1,5 @@
 ﻿using Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 
 namespace ReadLater5.Controllers
 {
+    [Authorize]
     public class BookmarksController : Controller
 
 
@@ -33,7 +35,8 @@ namespace ReadLater5.Controllers
 
         public IActionResult Index()
         {
-            List<Bookmark> model = _bookmarkService.GetBookmarks();
+            string userId = GetUserId();
+            List<Bookmark> model = _bookmarkService.GetBookmarks(userId);
             return View(model);
         }
 
@@ -50,6 +53,7 @@ namespace ReadLater5.Controllers
         {
             if (ModelState.IsValid)
             {
+                string userId = GetUserId();
                 if (!string.IsNullOrEmpty(newCategoryName))
                 {
                     var existingCategory = _categoryService.GetCategory(newCategoryName);
@@ -67,7 +71,7 @@ namespace ReadLater5.Controllers
                 }
 
                 bookmark.CreateDate = DateTime.Now;
-                _bookmarkService.CreateBookmark(bookmark);
+                _bookmarkService.CreateBookmark(bookmark, userId);
 
                 return RedirectToAction("Index");
             }

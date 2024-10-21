@@ -14,8 +14,9 @@ namespace Services
         {
             _bookmarkRepository = bookmarkRepository;
         }
-        public Bookmark CreateBookmark(Bookmark bookmark)
+        public Bookmark CreateBookmark(Bookmark bookmark, string userId)
         {
+            bookmark.UserId = userId;
             return _bookmarkRepository.CreateBookmark(bookmark);
         }
 
@@ -39,9 +40,9 @@ namespace Services
             return bookmark;
         }
 
-        public List<Bookmark> GetBookmarks()
+        public List<Bookmark> GetBookmarks(string userId)
         {
-            return _bookmarkRepository.GetBookmarks();
+            return _bookmarkRepository.GetBookmarks(userId);
         }
 
         public void UpdateBookmark(Bookmark bookmark)
