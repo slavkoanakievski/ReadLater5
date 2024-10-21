@@ -14,10 +14,10 @@ namespace Repositories
         {
             _readLaterDataContext = readLaterDataContext;
         }
-        public Bookmark GetBookmark(int Id)
+        public Bookmark GetBookmark(int id, string userId)
         {
             return _readLaterDataContext.Bookmark
-                .Where(b => b.ID == Id)
+                .Where(b => b.ID == id && b.UserId == userId)
                 .Include(b => b.Category)
                 .FirstOrDefault();
         }

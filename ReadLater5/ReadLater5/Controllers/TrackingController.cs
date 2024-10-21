@@ -35,8 +35,6 @@ namespace ReadLater5.Controllers
         public async Task<IActionResult> TrackClick(int bookmarkId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-     
-
             string sourceUrl = Request.Headers["Referer"];
 
             var tracking = new ActivityTracking
@@ -49,7 +47,7 @@ namespace ReadLater5.Controllers
 
             await _trackingService.AddActivityTrackingAsync(tracking);
 
-            var bookmark =  _bookmarkService.GetBookmark(bookmarkId);
+            var bookmark =  _bookmarkService.GetBookmark(bookmarkId, userId);
             if (bookmark == null)
             {
                 return NotFound();

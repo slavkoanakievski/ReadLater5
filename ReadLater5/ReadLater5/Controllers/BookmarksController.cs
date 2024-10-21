@@ -1,12 +1,10 @@
-﻿using Data;
-using Entity;
+﻿using Entity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ReadLater5.Controllers
 {
@@ -16,12 +14,23 @@ namespace ReadLater5.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IBookmarkService _bookmarkService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BookmarksController(ICategoryService categoryService, IBookmarkService bookmarkService)
+        public BookmarksController(
+             ICategoryService categoryService
+            , IBookmarkService bookmarkService
+            , UserManager<ApplicationUser> userManager)
         {
             _categoryService = categoryService;
             _bookmarkService = bookmarkService;
+            _userManager = userManager;
         }
+
+        private string GetUserId()
+        {
+            return _userManager.GetUserId(User);
+        }
+
         public IActionResult Index()
         {
             List<Bookmark> model = _bookmarkService.GetBookmarks();
@@ -71,7 +80,8 @@ namespace ReadLater5.Controllers
 
         public IActionResult Edit(int? id)
         {
-            Bookmark bookmark = _bookmarkService.GetBookmark((int)id);
+            string userId = GetUserId();
+            Bookmark bookmark = _bookmarkService.GetBookmark((int)id, userId);
             var categories = _categoryService.GetCategories();
             ViewBag.CategoryList = new SelectList(categories, "ID", "Name", bookmark.CategoryId);
 
@@ -84,7 +94,8 @@ namespace ReadLater5.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingBookmark = _bookmarkService.GetBookmark(bookmark.ID);
+                string userId = GetUserId();
+                var existingBookmark = _bookmarkService.GetBookmark(bookmark.ID, userId);
 
                 if (!string.IsNullOrEmpty(newCategoryName))
                 {
@@ -119,7 +130,8 @@ namespace ReadLater5.Controllers
 
         public IActionResult Delete(int? id)
         {
-            Bookmark bookmark = _bookmarkService.GetBookmark((int)id);
+            string userId = GetUserId();
+            Bookmark bookmark = _bookmarkService.GetBookmark((int)id, userId);
 
             return View(bookmark);
         }
@@ -128,14 +140,15 @@ namespace ReadLater5.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Bookmark bookmark = _bookmarkService.GetBookmark(id);
+            string userId = GetUserId();
+            Bookmark bookmark = _bookmarkService.GetBookmark(id, userId);
             _bookmarkService.DeleteBookmark(bookmark);
             return RedirectToAction("Index");
         }
         public IActionResult Details(int? id)
         {
-
-            Bookmark bookmark = _bookmarkService.GetBookmark((int)id);
+            string userId = GetUserId();
+            Bookmark bookmark = _bookmarkService.GetBookmark((int)id, userId);
             return View(bookmark);
         }
 

@@ -7,7 +7,7 @@ namespace Repositories
     {
         Bookmark CreateBookmark(Bookmark bookmark);
         List<Bookmark> GetBookmarks();
-        Bookmark GetBookmark(int Id);
+        Bookmark GetBookmark(int id, string userId);
         void UpdateBookmark(Bookmark bookmark);
         void DeleteBookmark(Bookmark bookmark);
     }

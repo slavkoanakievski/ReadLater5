@@ -2,6 +2,7 @@
 using Repositories;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Services
 {
@@ -28,12 +29,12 @@ namespace Services
             _bookmarkRepository.DeleteBookmark(bookmark);
         }
 
-        public Bookmark GetBookmark(int Id)
+        public Bookmark GetBookmark(int id, string userId)
         {
-            Bookmark bookmark = _bookmarkRepository.GetBookmark(Id);
+            Bookmark bookmark = _bookmarkRepository.GetBookmark(id, userId);
             if (bookmark == null)
             {
-                throw new KeyNotFoundException($"No bookmark found with Id = {Id}.");
+                throw new KeyNotFoundException($"No bookmark found with Id = {id}.");
             }
             return bookmark;
         }
@@ -45,8 +46,7 @@ namespace Services
 
         public void UpdateBookmark(Bookmark bookmark)
         {
-
-            var existingBookmark = _bookmarkRepository.GetBookmark(bookmark.ID);
+            var existingBookmark = _bookmarkRepository.GetBookmark(bookmark.ID, bookmark.UserId);
             if (existingBookmark == null)
             {
                 throw new KeyNotFoundException($"No bookmark found with Id = {bookmark.ID}.");

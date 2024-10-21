@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Entity
@@ -18,5 +19,8 @@ namespace Entity
         public virtual Category Category { get; set; }
 
         public DateTime CreateDate { get; set; }
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
     }
 }
