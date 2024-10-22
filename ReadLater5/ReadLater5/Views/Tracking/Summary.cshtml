@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Data.Models.BookmarkStatistics>
+
+<h1>Bookmark Click Statistics</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Bookmark URL</th>
+                <th>Click Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stat in Model)
+            {
+                <tr>
+                    <td><a href="@stat.BookmarkUrl" target="_blank">@stat.BookmarkUrl</a></td>
+                    <td>@stat.ClickCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

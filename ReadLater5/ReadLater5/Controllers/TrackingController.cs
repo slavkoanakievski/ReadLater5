@@ -1,8 +1,7 @@
-﻿using Data;
+﻿using Data.Models;
 using Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -57,5 +56,38 @@ namespace ReadLater5.Controllers
 
             return Redirect(bookmark.URL);
         }
+
+        public async Task<IActionResult> Summary()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<BookmarkStatistics> stats = await _trackingService.GetClickStatisticsAsync(userId);
+            return View(stats);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GenerateShortUrl(int bookmarkId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var bookmark = _bookmarkService.GetBookmark(bookmarkId, userId);
+
+            string shortUrl = Url.Action("Details", "Bookmarks", new { id = bookmarkId }, Request.Scheme);
+
+
+            var tracking = new ActivityTracking
+            {
+                UserId = userId,
+                BookmarkId = bookmarkId,
+                ClickedAt = DateTime.UtcNow,
+                SourceUrl = shortUrl
+            };
+
+            await _trackingService.AddActivityTrackingAsync(tracking);
+
+
+            TempData["ShortUrl"] = shortUrl;
+            return Redirect("Index");
+        }
+
     }
 }

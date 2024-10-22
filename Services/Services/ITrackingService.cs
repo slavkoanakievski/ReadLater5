@@ -1,6 +1,8 @@
-﻿using Entity;
+﻿using Data.Models;
+using Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 
 namespace Services
 {
@@ -8,5 +10,7 @@ namespace Services
     {
         Task AddActivityTrackingAsync(ActivityTracking activityTracking);
         Task<IEnumerable<ActivityTracking>> GetAllTrackingsForUserAsync(string userId);
+        Task<IEnumerable<BookmarkStatistics>> GetClickStatisticsAsync(string userId);
+
     }
 }

@@ -6,7 +6,26 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h1>Activity Tracking</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Activity Tracking</h1>
+        <a href="@Url.Action("Summary", "Tracking")" class="btn btn-primary">
+            <i class="fas fa-chart-bar"></i> View Statistics
+        </a>
+    </div>
+
+    @if (TempData["ShortUrl"] != null)
+    {
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div class="alert alert-success">
+                Short URL generated: <a href="@TempData["ShortUrl"]">@TempData["ShortUrl"]</a>
+            </div>
+            <button class="btn btn-link" onclick="copyToClipboard('@TempData["ShortUrl"]')">
+                <i class="fas fa-copy"></i> Copy Short URL
+            </button>
+        </div>
+
+    }
 
     <div style="max-height: 400px; overflow-y: auto;">
         <table class="table">
@@ -30,8 +49,16 @@
                         <td>@tracking.SourceUrl</td>
                         <td>
                             <button class="btn btn-link" onclick="copyToClipboard('@tracking.SourceUrl')">
-                                <i class="fas fa-copy"></i> Copy
+                                <i class="fas fa-copy"></i> Copy Source URL
                             </button>
+                        </td>
+                        <td>
+                            <form asp-action="GenerateShortUrl" asp-controller="Tracking" method="post">
+                                <input type="hidden" name="bookmarkId" value="@tracking.BookmarkId" />
+                                <button type="submit" class="btn btn-outline-info btn-sm">
+                                    <i class="fas fa-link"></i> Generate Short URL
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 }

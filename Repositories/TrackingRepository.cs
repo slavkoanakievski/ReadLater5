@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Models;
 using Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -27,6 +28,21 @@ namespace Repositories
             return await _context.ActivityTrackings
             .Where(at => at.UserId == userId)
             .ToListAsync();
+        }
+
+        public async Task<IEnumerable<BookmarkStatistics>> GetClickStatisticsAsync(string userId)
+        {
+            IEnumerable<BookmarkStatistics> bookmarkStatistics = await _context.ActivityTrackings
+            .Where(ac => ac.UserId == userId)
+           .GroupBy(at => at.SourceUrl)
+           .Select(g => new BookmarkStatistics
+           {
+               BookmarkUrl = g.Key,
+               ClickCount = g.Count()
+           })
+           .ToListAsync();
+
+            return bookmarkStatistics;
         }
     }
 }
